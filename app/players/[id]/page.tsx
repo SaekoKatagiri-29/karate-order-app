@@ -2,6 +2,7 @@
 
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
+import LoadingPanda from '@/components/LoadingPanda'
 
 type Analysis = {
   id: number
@@ -150,7 +151,7 @@ export default function PlayerDetailPage({ params }: { params: Promise<{ id: str
     })
   }
 
-  if (loading) return <p className="text-gray-400 text-center py-12">読み込み中...</p>
+  if (loading) return <LoadingPanda />
   if (!player) return <p className="text-red-500 text-center py-12">選手が見つかりません</p>
 
   const analysisDateOf = (a: Analysis) =>

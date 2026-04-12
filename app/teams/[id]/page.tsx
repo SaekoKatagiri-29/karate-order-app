@@ -2,6 +2,7 @@
 
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
+import LoadingPanda from '@/components/LoadingPanda'
 
 type Coach = { id: number; name: string; nickname: string | null; startYear: number; endYear: number | null }
 type Player = { id: number; name: string; nickname: string | null; enrollmentYear: number; isRetired: boolean }
@@ -139,7 +140,7 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
     fetchTeam()
   }
 
-  if (loading) return <p className="text-gray-400 text-center py-12">読み込み中...</p>
+  if (loading) return <LoadingPanda />
   if (!team) return <p className="text-red-500 text-center py-12">チームが見つかりません</p>
 
   const activePlayers = team.players.filter((p) => !p.isRetired)

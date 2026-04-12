@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import LoadingPanda from '@/components/LoadingPanda'
 
 type OsakaPlayer = { id: number; name: string; enrollmentYear: number; isRetired: boolean }
 
@@ -127,7 +128,7 @@ export default function OsakaPlayersPage() {
 
       {/* 選手一覧 */}
       {loading ? (
-        <p className="text-gray-400 text-center py-12">読み込み中...</p>
+        <LoadingPanda />
       ) : players.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
           <div className="text-4xl mb-3">👊</div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import LoadingPanda from '@/components/LoadingPanda'
 
 type Team = {
   id: number
@@ -134,7 +135,7 @@ export default function TeamsPage() {
 
       {/* 大学一覧 */}
       {loading ? (
-        <p className="text-gray-400 text-center py-12">読み込み中...</p>
+        <LoadingPanda />
       ) : teams.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
           <div className="text-4xl mb-3">🏫</div>

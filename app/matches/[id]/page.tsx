@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import LoadingPanda from '@/components/LoadingPanda'
 
 type MatchDetail = {
   id: number
@@ -64,7 +65,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
     router.push('/matches')
   }
 
-  if (loading) return <p className="text-gray-400 text-center py-12">読み込み中...</p>
+  if (loading) return <LoadingPanda />
   if (!match) return <p className="text-red-500 text-center py-12">試合記録が見つかりません</p>
 
   const isPractice = match.matchType === 'PRACTICE'

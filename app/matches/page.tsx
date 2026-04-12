@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import LoadingPanda from '@/components/LoadingPanda'
 
 type Match = {
   id: number
@@ -83,7 +84,7 @@ export default function MatchesPage() {
       </div>
 
       {loading ? (
-        <p className="text-gray-400 text-center py-12">読み込み中...</p>
+        <LoadingPanda />
       ) : matches.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
           <div className="text-4xl mb-3">📋</div>
