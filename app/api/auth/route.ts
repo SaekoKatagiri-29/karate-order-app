@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   const response = NextResponse.json({ success: true })
   response.cookies.set('karate-auth', section, {
     path: '/',
-    maxAge: 60 * 60 * 24 * 30, // 30日
+    maxAge: 60 * 60 * 24, // 24時間
     sameSite: 'lax',
   })
   return response
