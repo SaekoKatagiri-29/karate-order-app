@@ -352,14 +352,10 @@ export default function NewMatchPage() {
       {/* ---- Step 3b: 練習試合 個人対決（自由追加） ---- */}
       {step === 3 && isPractice && (
         <div className="space-y-4">
-          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-700">
-            個人の対決結果を記録します。ポジションは関係なく、誰が誰に勝ったかを入力してください。
-          </div>
-
           {practiceBouts.map((bout, index) => (
             <div key={bout.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-gray-600">対決 {index + 1}</span>
+                <span className="text-sm font-semibold text-gray-600">試合 {index + 1}</span>
                 {practiceBouts.length > 1 && (
                   <button onClick={() => removePracticeBout(bout.id)}
                     className="text-xs text-gray-300 hover:text-red-400 transition-colors">削除</button>
@@ -407,10 +403,10 @@ export default function NewMatchPage() {
             </div>
           ))}
 
-          {/* 対決追加ボタン */}
+          {/* 試合追加ボタン */}
           <button onClick={addPracticeBout}
             className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-sm text-gray-400 hover:border-[#1a2e4a] hover:text-[#1a2e4a] transition-colors">
-            ＋ 対決を追加
+            ＋ 試合を追加
           </button>
 
           {/* メモ・保存 */}
