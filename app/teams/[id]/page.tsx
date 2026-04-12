@@ -7,6 +7,27 @@ type Coach = { id: number; name: string; nickname: string | null; startYear: num
 type Player = { id: number; name: string; nickname: string | null; enrollmentYear: number; isRetired: boolean }
 type Team = { id: number; name: string; type: string; coaches: Coach[]; players: Player[] }
 
+type MatchOrder = {
+  id: number
+  date: string
+  matchType: string
+  isTournamentFirst: boolean
+  result: string | null
+  orderEntries: {
+    id: number
+    position: string
+    player: { id: number; name: string; nickname: string | null }
+  }[]
+}
+
+const POS_LABEL: Record<string, string> = { SENPO: '先鋒', CHUKEN: '中堅', TAISHO: '大将' }
+const RESULT_STYLE: Record<string, string> = {
+  WIN: 'bg-green-100 text-green-700',
+  LOSS: 'bg-red-100 text-red-700',
+  DRAW: 'bg-gray-100 text-gray-600',
+}
+const RESULT_LABEL: Record<string, string> = { WIN: '勝', LOSS: '負', DRAW: '引分' }
+
 const CURRENT_YEAR = new Date().getFullYear()
 const ACADEMIC_YEAR = new Date().getMonth() >= 3 ? CURRENT_YEAR : CURRENT_YEAR - 1
 
@@ -20,6 +41,7 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
   const { id } = use(params)
   const [team, setTeam] = useState<Team | null>(null)
   const [loading, setLoading] = useState(true)
+  const [matches, setMatches] = useState<MatchOrder[]>([])
 
   // コーチフォーム
   const [showCoachForm, setShowCoachForm] = useState(false)
@@ -37,7 +59,19 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
     setLoading(false)
   }
 
-  useEffect(() => { fetchTeam() }, [id])
+  const fetchMatches = async () => {
+    const res = await fetch(`/api/matches?teamId=${id}`)
+    if (res.ok) {
+      const data: MatchOrder[] = await res.json()
+      // 公式戦のみ表示（オーダーが意味を持つ試合）
+      setMatches(data.filter((m) => m.matchType === 'OFFICIAL' && m.orderEntries.length > 0))
+    }
+  }
+
+  useEffect(() => {
+    fetchTeam()
+    fetchMatches()
+  }, [id])
 
   // --- Coach handlers ---
   const handleCoachSubmit = async (e: React.FormEvent) => {
@@ -187,6 +221,60 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
         )}
       </section>
 
+      {/* 過去オーダーセクション */}
+      {matches.length > 0 && (
+        <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+          <h2 className="font-semibold text-gray-700 mb-4">過去のオーダー（公式戦）</h2>
+          <div className="space-y-3">
+            {matches.map((match) => {
+              const orderByPos = Object.fromEntries(match.orderEntries.map((o) => [o.position, o]))
+              return (
+                <div key={match.id} className="border border-gray-100 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    <span className="text-sm font-medium text-gray-700">
+                      {new Date(match.date).toLocaleDateString('ja-JP')}
+                    </span>
+                    {match.isTournamentFirst && (
+                      <span className="text-xs bg-purple-50 text-purple-600 px-1.5 py-0.5 rounded">初戦</span>
+                    )}
+                    {match.result && (
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${RESULT_STYLE[match.result]}`}>
+                        {RESULT_LABEL[match.result]}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex gap-4 flex-wrap">
+                    {(['SENPO', 'CHUKEN', 'TAISHO'] as const).map((pos) => {
+                      const entry = orderByPos[pos]
+                      return (
+                        <div key={pos} className="flex items-center gap-1.5">
+                          <span className="bg-[#1a2e4a] text-white text-xs font-bold px-1.5 py-0.5 rounded">
+                            {POS_LABEL[pos]}
+                          </span>
+                          {entry ? (
+                            <Link
+                              href={`/players/${entry.player.id}`}
+                              className="text-sm text-gray-800 hover:text-[#1a2e4a] hover:underline"
+                            >
+                              {entry.player.name}
+                              {entry.player.nickname && (
+                                <span className="text-xs text-gray-400 ml-1">（{entry.player.nickname}）</span>
+                              )}
+                            </Link>
+                          ) : (
+                            <span className="text-sm text-gray-400">—</span>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+      )}
+
       {/* 選手セクション */}
       <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
         <div className="flex items-center justify-between mb-4">
@@ -259,12 +347,12 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
 function PlayerRow({ player, onEdit, onDelete }: { player: Player; onEdit: (p: Player) => void; onDelete: (p: Player) => void }) {
   return (
     <div className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-      <div>
+      <Link href={`/players/${player.id}`} className="flex-1 min-w-0 hover:text-[#1a2e4a] transition-colors">
         <span className="font-medium text-gray-800">{player.name}</span>
         {player.nickname && <span className="ml-2 text-sm text-gray-400">（{player.nickname}）</span>}
         <span className="ml-2 text-xs text-gray-400">{gradeLabel(player.enrollmentYear)}</span>
-      </div>
-      <div className="flex gap-1">
+      </Link>
+      <div className="flex gap-1 shrink-0">
         <button onClick={() => onEdit(player)} className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded hover:bg-gray-100">編集</button>
         <button onClick={() => onDelete(player)} className="text-xs text-gray-400 hover:text-red-500 px-2 py-1 rounded hover:bg-red-50">削除</button>
       </div>
