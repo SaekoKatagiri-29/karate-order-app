@@ -125,25 +125,43 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
           ) : (
             <div className="divide-y divide-gray-50">
               {practiceResults.map((r, i) => (
-                <div key={r.id} className="px-4 py-3 flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <span className="text-xs text-gray-400 shrink-0">#{i + 1}</span>
-                    <div className="text-sm min-w-0">
-                      <span className="font-medium text-gray-800">{r.osakaPlayer?.name ?? '—'}</span>
-                      {r.osakaPlayer && <span className="text-xs text-gray-400 ml-1">{gradeLabel(r.osakaPlayer.enrollmentYear)}</span>}
+                <div key={r.id} className="px-4 py-3 border-b border-gray-50 last:border-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <span className="text-xs text-gray-400 shrink-0">#{i + 1}</span>
+                      <div className="text-sm min-w-0">
+                        <span className="font-medium text-gray-800">{r.osakaPlayer?.name ?? '—'}</span>
+                        {r.osakaPlayer && <span className="text-xs text-gray-400 ml-1">{gradeLabel(r.osakaPlayer.enrollmentYear)}</span>}
+                      </div>
+                      <span className="text-gray-300 text-xs shrink-0">vs</span>
+                      <div className="text-sm min-w-0">
+                        <span className="font-medium text-gray-800">{r.opponentPlayer?.name ?? '—'}</span>
+                        {r.opponentPlayer && <span className="text-xs text-gray-400 ml-1">{gradeLabel(r.opponentPlayer.enrollmentYear)}</span>}
+                      </div>
                     </div>
-                    <span className="text-gray-300 text-xs shrink-0">vs</span>
-                    <div className="text-sm min-w-0">
-                      <span className="font-medium text-gray-800">{r.opponentPlayer?.name ?? '—'}</span>
-                      {r.opponentPlayer && <span className="text-xs text-gray-400 ml-1">{gradeLabel(r.opponentPlayer.enrollmentYear)}</span>}
+                    <div className="shrink-0 text-right">
+                      <span className={`text-sm font-bold px-2 py-0.5 rounded ${RESULT_STYLE[r.result]}`}>
+                        {RESULT_LABEL[r.result]}
+                      </span>
+                      {r.score && <div className="text-xs text-gray-400 mt-0.5">{r.score}</div>}
                     </div>
                   </div>
-                  <div className="shrink-0 text-right">
-                    <span className={`text-sm font-bold px-2 py-0.5 rounded ${RESULT_STYLE[r.result]}`}>
-                      {RESULT_LABEL[r.result]}
-                    </span>
-                    {r.score && <div className="text-xs text-gray-400 mt-0.5">{r.score}</div>}
-                  </div>
+                  {(r.osakaPlayerNotes || r.opponentPlayerNotes) && (
+                    <div className="mt-2 flex flex-col gap-1.5">
+                      {r.osakaPlayerNotes && (
+                        <div className="bg-blue-50 rounded px-2 py-1.5 text-xs text-blue-700">
+                          <span className="font-medium block mb-0.5">阪大選手メモ</span>
+                          <span className="whitespace-pre-wrap">{r.osakaPlayerNotes}</span>
+                        </div>
+                      )}
+                      {r.opponentPlayerNotes && (
+                        <div className="bg-orange-50 rounded px-2 py-1.5 text-xs text-orange-700">
+                          <span className="font-medium block mb-0.5">相手選手メモ</span>
+                          <span className="whitespace-pre-wrap">{r.opponentPlayerNotes}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
