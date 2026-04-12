@@ -3,8 +3,8 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 
 export const metadata: Metadata = {
-  title: "空手道オーダー予測",
-  description: "大学空手道部 女子組手 オーダー管理・予測システム",
+  title: "試合・選手情報管理",
+  description: "大阪大学空手道部 試合・選手情報管理システム",
 };
 
 export default function RootLayout({

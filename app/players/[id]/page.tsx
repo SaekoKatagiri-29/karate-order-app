@@ -346,7 +346,9 @@ export default function PlayerDetailPage({ params }: { params: Promise<{ id: str
                       <span className="bg-[#1a2e4a] text-white text-xs font-bold px-2 py-0.5 rounded">
                         {POS_LABEL[entry.position] ?? entry.position}
                       </span>
-                      <span className="text-sm text-gray-500">{formatDate(entry.match.date)}</span>
+                      <Link href={`/matches/${entry.match.id}`} className="text-sm text-gray-500 hover:text-[#1a2e4a] hover:underline">
+                        {formatDate(entry.match.date)}
+                      </Link>
                       <span className="text-xs text-gray-400">
                         {entry.match.matchType === 'OFFICIAL' ? '公式戦' : '練習試合'}
                       </span>

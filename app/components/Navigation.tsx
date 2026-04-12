@@ -6,8 +6,6 @@ import { usePathname, useRouter } from 'next/navigation'
 const navItems = [
   { href: '/', label: 'ホーム', icon: '🏠' },
   { href: '/teams', label: '対戦大学', icon: '🏫' },
-  { href: '/matches', label: '試合記録', icon: '📋' },
-  { href: '/predict', label: 'AI予測', icon: '🤖' },
   { href: '/osaka-players', label: '阪大選手', icon: '👊' },
 ]
 
@@ -29,7 +27,7 @@ export default function Navigation() {
       {/* デスクトップ用トップナビ */}
       <nav className="hidden md:flex bg-[#1a2e4a] text-white shadow-md">
         <div className="max-w-5xl mx-auto w-full px-4 flex items-center gap-8 h-14">
-          <Link href="/" className="font-bold text-lg tracking-wide hover:text-white/80 transition-colors">空手道オーダー管理</Link>
+          <Link href="/" className="font-bold text-lg tracking-wide hover:text-white/80 transition-colors">試合・選手情報管理</Link>
           <div className="flex gap-2 ml-4 flex-1">
             {navItems.map((item) => (
               <Link
@@ -76,7 +74,7 @@ export default function Navigation() {
 
       {/* モバイル用ヘッダー */}
       <header className="md:hidden bg-[#1a2e4a] text-white px-4 h-12 flex items-center justify-between shadow-md">
-        <Link href="/" className="font-bold text-base hover:text-white/80 transition-colors">空手道オーダー管理</Link>
+        <Link href="/" className="font-bold text-base hover:text-white/80 transition-colors">試合・選手情報管理</Link>
         <button onClick={handleLogout} className="text-white/50 hover:text-white text-xs transition-colors">
           ログアウト
         </button>

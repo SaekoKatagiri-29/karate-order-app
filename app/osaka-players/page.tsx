@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import LoadingPanda from '@/components/LoadingPanda'
 
 type OsakaPlayer = { id: number; name: string; enrollmentYear: number; isRetired: boolean }
@@ -140,10 +141,10 @@ export default function OsakaPlayersPage() {
             <div className="divide-y divide-gray-50">
               {activePlayers.map((player) => (
                 <div key={player.id} className="px-4 py-3 flex items-center justify-between">
-                  <div>
+                  <Link href={`/osaka-players/${player.id}`} className="flex-1 hover:opacity-70 transition-opacity">
                     <span className="font-medium text-gray-800">{player.name}</span>
                     <span className="ml-2 text-sm text-gray-400">{gradeLabel(player.enrollmentYear)}</span>
-                  </div>
+                  </Link>
                   <div className="flex gap-1">
                     <button onClick={() => handleEdit(player)} className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded hover:bg-gray-100">編集</button>
                     <button onClick={() => handleDelete(player)} className="text-xs text-gray-400 hover:text-red-500 px-2 py-1 rounded hover:bg-red-50">削除</button>
@@ -158,10 +159,10 @@ export default function OsakaPlayersPage() {
               <div className="divide-y divide-gray-50 mt-2 opacity-60">
                 {retiredPlayers.map((player) => (
                   <div key={player.id} className="py-2 flex items-center justify-between">
-                    <div>
+                    <Link href={`/osaka-players/${player.id}`} className="flex-1 hover:opacity-70 transition-opacity">
                       <span className="font-medium text-gray-700">{player.name}</span>
                       <span className="ml-2 text-xs text-gray-400">{player.enrollmentYear}年入学</span>
-                    </div>
+                    </Link>
                     <div className="flex gap-1">
                       <button onClick={() => handleEdit(player)} className="text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded hover:bg-gray-100">編集</button>
                       <button onClick={() => handleDelete(player)} className="text-xs text-gray-400 hover:text-red-500 px-2 py-1 rounded hover:bg-red-50">削除</button>
