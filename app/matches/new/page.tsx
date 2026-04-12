@@ -35,9 +35,9 @@ function playerDisplayName(p: Player | OsakaPlayer) {
 }
 
 // 公式戦の個人戦結果（先鋒/中堅/大将固定）
-type OfficialBout = { osakPlayerId: string; result: string; score: string }
+type OfficialBout = { osakPlayerId: string; result: string; score: string; osakaPlayerNotes: string; opponentPlayerNotes: string }
 // 練習試合の個人対決（自由追加）
-type PracticeBout = { id: number; osakPlayerId: string; opponentPlayerId: string; result: string; score: string }
+type PracticeBout = { id: number; osakPlayerId: string; opponentPlayerId: string; result: string; score: string; osakaPlayerNotes: string; opponentPlayerNotes: string }
 
 export default function NewMatchPage() {
   const router = useRouter()
@@ -63,14 +63,14 @@ export default function NewMatchPage() {
 
   // Step3: 公式戦個人戦結果（先鋒/中堅/大将）
   const [officialBouts, setOfficialBouts] = useState<Record<string, OfficialBout>>({
-    SENPO: { osakPlayerId: '', result: '', score: '' },
-    CHUKEN: { osakPlayerId: '', result: '', score: '' },
-    TAISHO: { osakPlayerId: '', result: '', score: '' },
+    SENPO: { osakPlayerId: '', result: '', score: '', osakaPlayerNotes: '', opponentPlayerNotes: '' },
+    CHUKEN: { osakPlayerId: '', result: '', score: '', osakaPlayerNotes: '', opponentPlayerNotes: '' },
+    TAISHO: { osakPlayerId: '', result: '', score: '', osakaPlayerNotes: '', opponentPlayerNotes: '' },
   })
 
   // Step3: 練習試合個人対決（自由追加）
   const newPracticeBout = (): PracticeBout => ({
-    id: Date.now(), osakPlayerId: '', opponentPlayerId: '', result: '', score: '',
+    id: Date.now(), osakPlayerId: '', opponentPlayerId: '', result: '', score: '', osakaPlayerNotes: '', opponentPlayerNotes: '',
   })
   const [practiceBouts, setPracticeBouts] = useState<PracticeBout[]>([newPracticeBout()])
 
@@ -129,6 +129,8 @@ export default function NewMatchPage() {
               opponentPlayerId: b.opponentPlayerId || null,
               result: b.result,
               score: b.score || null,
+              osakaPlayerNotes: b.osakaPlayerNotes || null,
+              opponentPlayerNotes: b.opponentPlayerNotes || null,
             }))
         : POSITIONS.map((p) => ({
             position: p.key,
@@ -136,6 +138,8 @@ export default function NewMatchPage() {
             opponentPlayerId: orders[p.key] || null,
             result: officialBouts[p.key].result || null,
             score: officialBouts[p.key].score || null,
+            osakaPlayerNotes: officialBouts[p.key].osakaPlayerNotes || null,
+            opponentPlayerNotes: officialBouts[p.key].opponentPlayerNotes || null,
           }))
 
       const payload = {
@@ -333,6 +337,20 @@ export default function NewMatchPage() {
                     placeholder="例：3-1"
                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a2e4a]/30" />
                 </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">阪大選手メモ（任意）</label>
+                    <textarea value={bout.osakaPlayerNotes} onChange={(e) => updateOfficialBout(pos.key, 'osakaPlayerNotes', e.target.value)}
+                      rows={2} placeholder="阪大選手の動きや気づきなど"
+                      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a2e4a]/30 resize-none" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">相手選手メモ（任意）</label>
+                    <textarea value={bout.opponentPlayerNotes} onChange={(e) => updateOfficialBout(pos.key, 'opponentPlayerNotes', e.target.value)}
+                      rows={2} placeholder="相手選手の動きや組手スタイルなど"
+                      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a2e4a]/30 resize-none" />
+                  </div>
+                </div>
               </div>
             )
           })}
@@ -399,6 +417,20 @@ export default function NewMatchPage() {
                 <input type="text" value={bout.score} onChange={(e) => updatePracticeBout(bout.id, 'score', e.target.value)}
                   placeholder="例：3-1"
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a2e4a]/30" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">阪大選手メモ（任意）</label>
+                  <textarea value={bout.osakaPlayerNotes} onChange={(e) => updatePracticeBout(bout.id, 'osakaPlayerNotes', e.target.value)}
+                    rows={2} placeholder="阪大選手の動きや気づきなど"
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a2e4a]/30 resize-none" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">相手選手メモ（任意）</label>
+                  <textarea value={bout.opponentPlayerNotes} onChange={(e) => updatePracticeBout(bout.id, 'opponentPlayerNotes', e.target.value)}
+                    rows={2} placeholder="相手選手の動きや組手スタイルなど"
+                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a2e4a]/30 resize-none" />
+                </div>
               </div>
             </div>
           ))}

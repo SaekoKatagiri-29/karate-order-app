@@ -25,6 +25,8 @@ type MatchResult = {
   result: string
   score: string | null
   notes: string | null
+  osakaPlayerNotes: string | null
+  opponentPlayerNotes: string | null
   match: { id: number; date: string; matchType: string; notes: string | null }
   osakaPlayer: { id: number; name: string } | null
 }
@@ -355,9 +357,14 @@ export default function PlayerDetailPage({ params }: { params: Promise<{ id: str
                       </span>
                     )}
                   </div>
-                  {boutNotes && (
-                    <p className="mt-1.5 ml-1 text-xs text-gray-500 bg-gray-50 rounded px-2 py-1 whitespace-pre-wrap">
-                      <span className="text-gray-400 mr-1">対戦メモ:</span>{boutNotes}
+                  {boutResult?.opponentPlayerNotes && (
+                    <p className="mt-1.5 ml-1 text-xs text-orange-700 bg-orange-50 rounded px-2 py-1 whitespace-pre-wrap">
+                      <span className="font-medium mr-1">相手選手メモ:</span>{boutResult.opponentPlayerNotes}
+                    </p>
+                  )}
+                  {boutResult?.osakaPlayerNotes && (
+                    <p className="mt-1 ml-1 text-xs text-blue-700 bg-blue-50 rounded px-2 py-1 whitespace-pre-wrap">
+                      <span className="font-medium mr-1">阪大選手メモ:</span>{boutResult.osakaPlayerNotes}
                     </p>
                   )}
                   {matchNotes && (

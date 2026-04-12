@@ -113,7 +113,9 @@ model MatchResult {
   osakaPlayer      OsakaPlayer? @relation("OsakaPlayerResults", fields: [osakPlayerId], references: [id])
   opponentPlayerId Int?
   opponentPlayer   Player?      @relation("OpponentPlayerResults", fields: [opponentPlayerId], references: [id])
-  result           String       // "WIN" | "LOSS" | "DRAW"
-  score            String?
-  notes            String?
+  result              String       // "WIN" | "LOSS" | "DRAW"
+  score               String?
+  notes               String?
+  osakaPlayerNotes    String?      // 阪大選手に対するメモ
+  opponentPlayerNotes String?      // 相手選手に対するメモ
 }

@@ -25,6 +25,8 @@ type MatchDetail = {
     result: string
     score: string | null
     notes: string | null
+    osakaPlayerNotes: string | null
+    opponentPlayerNotes: string | null
     osakaPlayer: { id: number; name: string; enrollmentYear: number } | null
     opponentPlayer: { id: number; name: string; nickname: string | null; enrollmentYear: number } | null
   }[]
@@ -169,7 +171,8 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
           const order = orderByPos[pos]
           const opponentPlayer = bout?.opponentPlayer ?? order?.player ?? null
           return (
-            <div key={pos} className="grid grid-cols-4 items-center px-4 py-3 border-b border-gray-50 last:border-0">
+            <div key={pos}>
+            <div className="grid grid-cols-4 items-center px-4 py-3 border-b border-gray-50">
               <div>
                 <span className="bg-[#1a2e4a] text-white text-xs font-bold px-2 py-0.5 rounded">{POS_LABEL[pos]}</span>
               </div>
@@ -202,6 +205,24 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
                   </div>
                 ) : <span className="text-gray-300 text-sm">—</span>}
               </div>
+            </div>
+            {/* 選手別メモ */}
+            {(bout?.osakaPlayerNotes || bout?.opponentPlayerNotes) && (
+              <div className="grid grid-cols-2 gap-2 px-4 pb-3 border-b border-gray-50">
+                {bout.osakaPlayerNotes && (
+                  <div className="bg-blue-50 rounded px-2 py-1.5 text-xs text-blue-700">
+                    <span className="font-medium block mb-0.5">阪大選手メモ</span>
+                    <span className="whitespace-pre-wrap">{bout.osakaPlayerNotes}</span>
+                  </div>
+                )}
+                {bout.opponentPlayerNotes && (
+                  <div className="bg-orange-50 rounded px-2 py-1.5 text-xs text-orange-700">
+                    <span className="font-medium block mb-0.5">相手選手メモ</span>
+                    <span className="whitespace-pre-wrap">{bout.opponentPlayerNotes}</span>
+                  </div>
+                )}
+              </div>
+            )}
             </div>
           )
         })}

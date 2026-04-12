@@ -56,7 +56,7 @@ export async function POST(request: Request) {
       await tx.matchResult.createMany({
         data: matchResults
           .filter((r: { position: string; result: string }) => r.result)
-          .map((r: { position: string; osakPlayerId?: string | number; opponentPlayerId?: string | number; result: string; score?: string; notes?: string }) => ({
+          .map((r: { position: string; osakPlayerId?: string | number; opponentPlayerId?: string | number; result: string; score?: string; notes?: string; osakaPlayerNotes?: string; opponentPlayerNotes?: string }) => ({
             matchId: created.id,
             position: r.position,
             osakPlayerId: r.osakPlayerId ? Number(r.osakPlayerId) : null,
@@ -64,6 +64,8 @@ export async function POST(request: Request) {
             result: r.result,
             score: r.score || null,
             notes: r.notes || null,
+            osakaPlayerNotes: r.osakaPlayerNotes || null,
+            opponentPlayerNotes: r.opponentPlayerNotes || null,
           })),
       })
     }
