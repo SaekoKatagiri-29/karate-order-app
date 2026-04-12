@@ -16,7 +16,7 @@ type Analysis = {
 type OrderEntry = {
   id: number
   position: string
-  match: { id: number; date: string; matchType: string; result: string | null; team: { name: string } }
+  match: { id: number; date: string; matchType: string; result: string | null; notes: string | null; team: { name: string } }
 }
 
 type MatchResult = {
@@ -24,7 +24,8 @@ type MatchResult = {
   position: string | null
   result: string
   score: string | null
-  match: { id: number; date: string; matchType: string }
+  notes: string | null
+  match: { id: number; date: string; matchType: string; notes: string | null }
   osakaPlayer: { id: number; name: string } | null
 }
 
@@ -328,25 +329,45 @@ export default function PlayerDetailPage({ params }: { params: Promise<{ id: str
       {player.orderEntries.length > 0 && (
         <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
           <h2 className="font-semibold text-gray-700 mb-3">試合出場履歴</h2>
-          <div className="space-y-2">
-            {player.orderEntries.map((entry) => (
-              <div key={entry.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                <div className="flex items-center gap-2">
-                  <span className="bg-[#1a2e4a] text-white text-xs font-bold px-2 py-0.5 rounded">
-                    {POS_LABEL[entry.position] ?? entry.position}
-                  </span>
-                  <span className="text-sm text-gray-500">{formatDate(entry.match.date)}</span>
-                  <span className="text-xs text-gray-400">
-                    {entry.match.matchType === 'OFFICIAL' ? '公式戦' : '練習試合'}
-                  </span>
+          <div className="space-y-1">
+            {player.orderEntries.map((entry) => {
+              // 同じ試合のMatchResultを探してbout-specific notesを取得
+              const boutResult = player.matchResults.find(
+                (r) => r.match.id === entry.match.id && r.position === entry.position
+              )
+              const matchNotes = entry.match.notes
+              const boutNotes = boutResult?.notes
+              return (
+                <div key={entry.id} className="py-2 border-b border-gray-50 last:border-0">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-[#1a2e4a] text-white text-xs font-bold px-2 py-0.5 rounded">
+                        {POS_LABEL[entry.position] ?? entry.position}
+                      </span>
+                      <span className="text-sm text-gray-500">{formatDate(entry.match.date)}</span>
+                      <span className="text-xs text-gray-400">
+                        {entry.match.matchType === 'OFFICIAL' ? '公式戦' : '練習試合'}
+                      </span>
+                    </div>
+                    {entry.match.result && (
+                      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${RESULT_STYLE[entry.match.result]}`}>
+                        {RESULT_LABEL[entry.match.result]}
+                      </span>
+                    )}
+                  </div>
+                  {boutNotes && (
+                    <p className="mt-1.5 ml-1 text-xs text-gray-500 bg-gray-50 rounded px-2 py-1 whitespace-pre-wrap">
+                      <span className="text-gray-400 mr-1">対戦メモ:</span>{boutNotes}
+                    </p>
+                  )}
+                  {matchNotes && (
+                    <p className="mt-1 ml-1 text-xs text-gray-400 bg-gray-50 rounded px-2 py-1 whitespace-pre-wrap">
+                      <span className="mr-1">試合メモ:</span>{matchNotes}
+                    </p>
+                  )}
                 </div>
-                {entry.match.result && (
-                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${RESULT_STYLE[entry.match.result]}`}>
-                    {RESULT_LABEL[entry.match.result]}
-                  </span>
-                )}
-              </div>
-            ))}
+              )
+            })}
           </div>
         </section>
       )}
