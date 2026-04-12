@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 const navItems = [
   { href: '/', label: 'ホーム', icon: '🏠' },
@@ -13,14 +13,24 @@ const navItems = [
 
 export default function Navigation() {
   const pathname = usePathname()
+  const router = useRouter()
+
+  // ログインページでは非表示
+  if (pathname === '/login') return null
+
+  const handleLogout = async () => {
+    await fetch('/api/auth', { method: 'DELETE' })
+    router.push('/login')
+    router.refresh()
+  }
 
   return (
     <>
       {/* デスクトップ用トップナビ */}
-      <nav className="hidden md:flex bg-navy-900 bg-[#1a2e4a] text-white shadow-md">
+      <nav className="hidden md:flex bg-[#1a2e4a] text-white shadow-md">
         <div className="max-w-5xl mx-auto w-full px-4 flex items-center gap-8 h-14">
-          <Link href="/" className="font-bold text-lg tracking-wide hover:text-white/80 transition-colors">空手道オーダー予測</Link>
-          <div className="flex gap-2 ml-4">
+          <Link href="/" className="font-bold text-lg tracking-wide hover:text-white/80 transition-colors">空手道オーダー管理</Link>
+          <div className="flex gap-2 ml-4 flex-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -35,6 +45,12 @@ export default function Navigation() {
               </Link>
             ))}
           </div>
+          <button
+            onClick={handleLogout}
+            className="text-white/50 hover:text-white text-sm transition-colors ml-auto"
+          >
+            ログアウト
+          </button>
         </div>
       </nav>
 
@@ -59,8 +75,11 @@ export default function Navigation() {
       </nav>
 
       {/* モバイル用ヘッダー */}
-      <header className="md:hidden bg-[#1a2e4a] text-white px-4 h-12 flex items-center shadow-md">
-        <Link href="/" className="font-bold text-base hover:text-white/80 transition-colors">空手道オーダー予測</Link>
+      <header className="md:hidden bg-[#1a2e4a] text-white px-4 h-12 flex items-center justify-between shadow-md">
+        <Link href="/" className="font-bold text-base hover:text-white/80 transition-colors">空手道オーダー管理</Link>
+        <button onClick={handleLogout} className="text-white/50 hover:text-white text-xs transition-colors">
+          ログアウト
+        </button>
       </header>
     </>
   )
