@@ -237,13 +237,15 @@ export default function NewMatchPage() {
             </div>
           </div>
 
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" checked={basicInfo.isTournamentFirst}
-              onChange={(e) => setBasicInfo({ ...basicInfo, isTournamentFirst: e.target.checked })} className="w-4 h-4" />
-            <span className="text-sm text-gray-700">トーナメント初戦</span>
-          </label>
+          {!isPractice && (
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" checked={basicInfo.isTournamentFirst}
+                onChange={(e) => setBasicInfo({ ...basicInfo, isTournamentFirst: e.target.checked })} className="w-4 h-4" />
+              <span className="text-sm text-gray-700">トーナメント初戦</span>
+            </label>
+          )}
 
-          {coaches.length > 0 && (
+          {!isPractice && coaches.length > 0 && (
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-1">相手チームの監督</label>
               <select value={basicInfo.coachId} onChange={(e) => setBasicInfo({ ...basicInfo, coachId: e.target.value })}
