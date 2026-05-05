@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.json()
-  const { date, teamId, coachId, matchType, isTournamentFirst, result, notes, orders, matchResults } = body
+  const { date, teamId, coachId, matchType, isTournamentFirst, tournamentName, videoUrl, result, notes, orders, matchResults } = body
 
   if (!date || !teamId || !matchType) {
     return Response.json({ error: '試合日・対戦相手・試合種別は必須です' }, { status: 400 })
@@ -33,6 +33,8 @@ export async function POST(request: Request) {
         coachId: coachId ? Number(coachId) : null,
         matchType,
         isTournamentFirst: Boolean(isTournamentFirst),
+        tournamentName: tournamentName || null,
+        videoUrl: videoUrl || null,
         result: result || null,
         notes: notes || null,
       },

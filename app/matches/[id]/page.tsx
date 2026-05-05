@@ -10,6 +10,8 @@ type MatchDetail = {
   date: string
   matchType: string
   isTournamentFirst: boolean
+  tournamentName: string | null
+  videoUrl: string | null
   result: string | null
   notes: string | null
   team: { id: number; name: string; type: string }
@@ -103,10 +105,23 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
                 <span className="text-xs bg-purple-50 text-purple-600 px-2 py-0.5 rounded">トーナメント初戦</span>
               )}
             </div>
+            {match.tournamentName && (
+              <p className="text-sm text-gray-600 mt-1 font-medium">{match.tournamentName}</p>
+            )}
             {match.coach && (
               <p className="text-sm text-gray-500 mt-1">
                 相手監督：{match.coach.name}{match.coach.nickname ? `（${match.coach.nickname}）` : ''}
               </p>
+            )}
+            {match.videoUrl && (
+              <a
+                href={match.videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 mt-1.5 text-sm text-[#1a2e4a] hover:underline"
+              >
+                <span>▶</span> 試合動画を見る
+              </a>
             )}
           </div>
           <button onClick={handleDelete} className="text-xs text-gray-300 hover:text-red-400 transition-colors px-2 py-1">削除</button>

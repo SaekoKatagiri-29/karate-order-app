@@ -70,6 +70,8 @@ model Match {
   coach             Coach?           @relation(fields: [coachId], references: [id])
   matchType         String           // "OFFICIAL"(公式戦) | "PRACTICE"(練習試合)
   isTournamentFirst Boolean          @default(false)
+  tournamentName    String?          // 大会名（公式戦）
+  videoUrl          String?          // 試合動画URL
   result            String?          // "WIN" | "LOSS" | "DRAW"
   notes             String?
   orderEntries      OrderEntry[]

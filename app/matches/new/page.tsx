@@ -56,6 +56,8 @@ export default function NewMatchPage() {
     date: new Date().toISOString().slice(0, 10),
     matchType: 'OFFICIAL',
     isTournamentFirst: false,
+    tournamentName: '',
+    videoUrl: '',
   })
 
   // Step2: 公式戦オーダー
@@ -148,6 +150,8 @@ export default function NewMatchPage() {
         coachId: basicInfo.coachId ? Number(basicInfo.coachId) : null,
         matchType: basicInfo.matchType,
         isTournamentFirst: basicInfo.isTournamentFirst,
+        tournamentName: basicInfo.tournamentName || null,
+        videoUrl: basicInfo.videoUrl || null,
         result: teamResult || null,
         notes: notes || null,
         orders: isPractice ? [] : POSITIONS.map((p) => ({ position: p.key, playerId: orders[p.key] || null })),
@@ -244,6 +248,24 @@ export default function NewMatchPage() {
               <span className="text-sm text-gray-700">トーナメント初戦</span>
             </label>
           )}
+
+          {!isPractice && (
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">大会名（任意）</label>
+              <input type="text" value={basicInfo.tournamentName}
+                onChange={(e) => setBasicInfo({ ...basicInfo, tournamentName: e.target.value })}
+                placeholder="例：関西学生空手道選手権大会"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a2e4a]/30" />
+            </div>
+          )}
+
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">試合動画URL（任意）</label>
+            <input type="url" value={basicInfo.videoUrl}
+              onChange={(e) => setBasicInfo({ ...basicInfo, videoUrl: e.target.value })}
+              placeholder="https://..."
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a2e4a]/30" />
+          </div>
 
           {!isPractice && coaches.length > 0 && (
             <div>
