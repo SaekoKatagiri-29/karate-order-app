@@ -5,8 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 
 const navItems = [
   { href: '/', label: 'ホーム', icon: '🏠' },
-  { href: '/teams', label: '対戦大学', icon: '🏫' },
-  { href: '/osaka-players', label: '阪大選手', icon: '👊' },
+  { href: '/teams', label: '大学一覧', icon: '🏛️' },
 ]
 
 export default function Navigation() {
@@ -36,7 +35,7 @@ export default function Navigation() {
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href))
                     ? 'bg-white/20 text-white'
-                    : 'text-white/70 hover:bg-white/10 hover:text-white'
+                    : 'text-white/90 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 {item.label}
@@ -45,7 +44,7 @@ export default function Navigation() {
           </div>
           <button
             onClick={handleLogout}
-            className="text-white/50 hover:text-white text-sm transition-colors ml-auto"
+            className="text-white/80 hover:text-white text-sm transition-colors ml-auto"
           >
             ログアウト
           </button>
@@ -62,7 +61,7 @@ export default function Navigation() {
               className={`flex-1 flex flex-col items-center py-2 text-xs transition-colors ${
                 (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href))
                   ? 'text-white'
-                  : 'text-white/50'
+                  : 'text-white/80'
               }`}
             >
               <span className="text-xl mb-0.5">{item.icon}</span>
@@ -75,7 +74,7 @@ export default function Navigation() {
       {/* モバイル用ヘッダー */}
       <header className="md:hidden bg-[#1a2e4a] text-white px-4 h-12 flex items-center justify-between shadow-md">
         <Link href="/" className="font-bold text-base hover:text-white/80 transition-colors">試合・選手情報管理</Link>
-        <button onClick={handleLogout} className="text-white/50 hover:text-white text-xs transition-colors">
+        <button onClick={handleLogout} className="text-white/80 hover:text-white text-xs transition-colors">
           ログアウト
         </button>
       </header>

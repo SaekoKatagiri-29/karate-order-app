@@ -150,7 +150,7 @@ export default function TeamDetailPage({ params }: { params: Promise<{ id: strin
     <div className="space-y-6">
       {/* ヘッダー */}
       <div>
-        <Link href="/teams" className="text-sm text-gray-400 hover:text-gray-600">← 対戦大学一覧</Link>
+        <Link href="/teams" className="text-sm text-gray-400 hover:text-gray-600">← 大学一覧</Link>
         <div className="flex items-center gap-2 mt-1">
           <h1 className="text-2xl font-bold text-gray-800">{team.name}</h1>
           <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">

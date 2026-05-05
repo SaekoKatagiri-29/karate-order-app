@@ -169,7 +169,7 @@ export default function PlayerDetailPage({ params }: { params: Promise<{ id: str
       {/* ヘッダー */}
       <div>
         <div className="flex items-center gap-2 text-sm text-gray-400 flex-wrap">
-          <Link href="/teams" className="hover:text-gray-600">対戦大学</Link>
+          <Link href="/teams" className="hover:text-gray-600">大学一覧</Link>
           <span>›</span>
           <Link href={`/teams/${player.team.id}`} className="hover:text-gray-600">{player.team.name}</Link>
           <span>›</span>

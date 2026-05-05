@@ -63,7 +63,12 @@ export default function OsakaPlayersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">阪大選手</h1>
+          <div className="flex items-center gap-2 text-sm text-gray-400 mb-1">
+            <Link href="/teams" className="hover:text-gray-600">大学一覧</Link>
+            <span>›</span>
+            <span className="text-gray-600">大阪大学</span>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-800">大阪大学 選手一覧</h1>
           <p className="text-gray-500 text-sm mt-1">現役 {activePlayers.length}名</p>
         </div>
         <button

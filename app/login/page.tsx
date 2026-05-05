@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState<'women' | 'men' | null>(null)
@@ -30,7 +31,9 @@ export default function LoginPage() {
       return
     }
 
-    router.push(section === 'women' ? '/' : '/mens')
+    const redirect = searchParams.get('redirect')
+    const defaultPath = section === 'women' ? '/' : '/mens'
+    router.push(redirect && redirect !== '/login' ? redirect : defaultPath)
     router.refresh()
   }
 
@@ -98,5 +101,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   )
 }

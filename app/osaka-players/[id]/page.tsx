@@ -99,7 +99,9 @@ export default function OsakaPlayerDetailPage({ params }: { params: Promise<{ id
       {/* ヘッダー */}
       <div>
         <div className="flex items-center gap-2 text-sm text-gray-400 flex-wrap">
-          <Link href="/osaka-players" className="hover:text-gray-600">阪大選手</Link>
+          <Link href="/teams" className="hover:text-gray-600">大学一覧</Link>
+          <span>›</span>
+          <Link href="/osaka-players" className="hover:text-gray-600">大阪大学</Link>
           <span>›</span>
           <span className="text-gray-600">{player.name}</span>
         </div>

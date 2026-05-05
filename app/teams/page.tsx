@@ -74,8 +74,8 @@ export default function TeamsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">対戦大学</h1>
-          <p className="text-gray-500 text-sm mt-1">{teams.length}校登録済み</p>
+          <h1 className="text-2xl font-bold text-gray-800">大学一覧</h1>
+          <p className="text-gray-500 text-sm mt-1">大阪大学・対戦校 {teams.length + 1}校</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
@@ -136,14 +136,29 @@ export default function TeamsPage() {
       {/* 大学一覧 */}
       {loading ? (
         <LoadingPanda />
-      ) : teams.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
-          <div className="text-4xl mb-3">🏫</div>
-          <p>まだ大学が登録されていません</p>
-        </div>
       ) : (
         <div className="grid grid-cols-1 gap-3">
-          {teams.map((team) => {
+          {/* 大阪大学（自チーム）*/}
+          <Link
+            href="/osaka-players"
+            className="bg-[#1a2e4a] text-white rounded-xl shadow-sm p-4 flex items-center justify-between hover:bg-[#243d5f] transition-colors"
+          >
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="font-semibold text-white">大阪大学</h3>
+                <span className="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full">自チーム</span>
+              </div>
+              <div className="text-xs text-white/70 mt-1">阪大選手一覧を見る</div>
+            </div>
+            <span className="text-white/60 text-lg">›</span>
+          </Link>
+
+          {teams.length === 0 ? (
+            <div className="text-center py-12 text-gray-400">
+              <div className="text-4xl mb-3">🏫</div>
+              <p>対戦大学が登録されていません</p>
+            </div>
+          ) : teams.map((team) => {
             const coach = currentCoach(team)
             return (
               <div key={team.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
