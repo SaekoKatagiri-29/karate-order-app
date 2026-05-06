@@ -28,14 +28,20 @@ export default function MatchesPage() {
   const [loading, setLoading] = useState(true)
 
   const fetchMatches = async (teamId?: string) => {
-    const url = teamId ? `/api/matches?teamId=${teamId}` : '/api/matches'
-    const res = await fetch(url)
-    setMatches(await res.json())
-    setLoading(false)
+    try {
+      const url = teamId ? `/api/matches?teamId=${teamId}` : '/api/matches'
+      const res = await fetch(url)
+      if (!res.ok) throw new Error('fetch error')
+      setMatches(await res.json())
+    } catch {
+      setMatches([])
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
-    fetch('/api/teams').then((r) => r.json()).then(setTeams)
+    fetch('/api/teams').then((r) => r.json()).then(setTeams).catch(() => {})
     fetchMatches()
   }, [])
 

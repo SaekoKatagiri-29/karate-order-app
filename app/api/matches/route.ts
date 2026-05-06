@@ -4,17 +4,22 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const teamId = searchParams.get('teamId')
 
-  const matches = await prisma.match.findMany({
-    where: teamId ? { teamId: Number(teamId) } : undefined,
-    include: {
-      team: true,
-      coach: true,
-      orderEntries: { include: { player: true } },
-      matchResults: { include: { osakaPlayer: true, opponentPlayer: true } },
-    },
-    orderBy: { date: 'desc' },
-  })
-  return Response.json(matches)
+  try {
+    const matches = await prisma.match.findMany({
+      where: teamId ? { teamId: Number(teamId) } : undefined,
+      include: {
+        team: true,
+        coach: true,
+        orderEntries: { include: { player: true } },
+        matchResults: { include: { osakaPlayer: true, opponentPlayer: true } },
+      },
+      orderBy: { date: 'desc' },
+    })
+    return Response.json(matches)
+  } catch (e) {
+    console.error('matches GET error:', e)
+    return Response.json({ error: 'データの取得に失敗しました' }, { status: 500 })
+  }
 }
 
 export async function POST(request: Request) {
